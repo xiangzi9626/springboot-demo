@@ -1,0 +1,1 @@
+将项目打包成war包 解压部署到tomcat webapps/ROOT目录下 tomcat默认网站运行根目录在ROOT目录下

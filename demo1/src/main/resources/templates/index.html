@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <script src="/js/jquery-3.2.1.js"></script>
+    <title></title>
+</head>
+<body style="background:#2b542c;width:100%;height:calc(100%)">
+<div style="width:100%;text-align: center;margin-top:80px;color:#ffff00">
+    <h3>springboot上传图片demo</h3>
+</div>
+<div id="imgBox" style="width:100%;text-align: center;margin-top:80px;">
+
+</div>
+<div style="width:100%;text-align:center;margin-top:80px;">
+    <input onclick="$('#uploadImg').click()" type="button" value="选择图片" style="background: #22AB38;color:#FFFFFF;padding:15px 40px;border:0"/>
+</div>
+<!----//上传图片隐藏表单///---->
+<form method="post" style="display: none;" id="uploadForm" enctype="multipart/form-data">
+    <input multiple accept="image/*" type="file" id="uploadImg" name="upload"
+           style="display:none">
+</form>
+<script>
+    $(function () {
+        $("#uploadImg").on("change", function () {
+            var file = $("#uploadImg").get(0).files[0];
+            var formData = new FormData();
+            formData.append("file", file);
+            $.ajax({
+                type: 'post',
+                url: "/upload",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    var obj=eval("("+data+")");
+                    if (obj.success===false){
+                        alert(obj.msg);
+                        return false;
+                    }
+                    var html="<img style='max-width:400px;max-height:400px;' src="+obj.url+"/>";
+                     $("#imgBox").html(html);
+                     $(file).val("");
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>
